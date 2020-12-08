@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "967870701796",
+    "project_id": "proyectofirebase2020-a89c3",
+    "storage_bucket": "proyectofirebase2020-a89c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967870701796:android:bfab4735765c29deb1ccf1",
+        "android_client_info": {
+          "package_name": "com.qbo.appfak2funcionesfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "967870701796-4lid6n7e349mf8p2rgvmgq2nnn21aqcu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qbo.appfak2funcionesfirebase",
+            "certificate_hash": "05d59dce9b5e0da5a1b636398caec6e7e607019f"
+          }
+        },
+        {
+          "client_id": "967870701796-mcok4ur8frdd6it2vksbj0eqb2m9492d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABe69BawfaKd1bt-sbadd-sY4BOE04f0w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967870701796-mcok4ur8frdd6it2vksbj0eqb2m9492d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

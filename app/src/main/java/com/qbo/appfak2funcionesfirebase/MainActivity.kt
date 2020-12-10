@@ -1,7 +1,11 @@
 package com.qbo.appfak2funcionesfirebase
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -13,11 +17,12 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-
+    private lateinit var navView: NavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
+        navView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -38,6 +43,29 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        mostrarInformacionLogin()
+    }
+
+    private fun mostrarInformacionLogin(){
+        val preferencia : SharedPreferences =
+            getSharedPreferences("appFirebaseQBO", Context.MODE_PRIVATE)
+        val email = preferencia.getString("email","").toString()
+        val tipo = preferencia.getString("tipo","").toString()
+        val nombre = preferencia.getString("nombre","").toString()
+        val urlimagen = preferencia.getString("urlimagen","").toString()
+        val tvnombreusuario : TextView = navView.getHeaderView(0)
+            .findViewById(R.id.tvnombreusuario)
+        val tvemailusuario : TextView = navView.getHeaderView(0)
+            .findViewById(R.id.tvemailusuario)
+        val ivusuario : ImageView = navView.getHeaderView(0)
+            .findViewById(R.id.ivusuario)
+
+        tvnombreusuario.text = nombre
+        tvemailusuario.text = email
+        if(tipo != TipoAutenticacion.FIREBASE.name){
+            Picasso.get().load(urlimagen).into(ivusuario)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

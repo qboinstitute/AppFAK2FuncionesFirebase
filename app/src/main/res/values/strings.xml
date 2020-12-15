@@ -15,4 +15,11 @@
     <string name="valetpassword">Ingrese su password</string>
     <string name="valbtnloginfirebase">LOGIN FIREBASE</string>
     <string name="errorLoginGoogle">Error en la autenticación con GMAIL</string>
+    <string name="facebook_app_id">1317345548627712</string>
+    <string name="fb_login_protocol_scheme">fb1317345548627712</string>
+    <string name="valcancelloginfb">Canceló la autenticación a Facebook.</string>
+    <string name="valerrorloginfb">Error en la autenticación a Facebook.</string>
+    <string name="valerrorloginfb2">Error en la autenticación a Facebook.</string>
+
+
 </resources>

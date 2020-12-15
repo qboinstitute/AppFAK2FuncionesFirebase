@@ -75,6 +75,16 @@
 
     </com.google.android.gms.common.SignInButton>
 
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btnloginfacebook"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnlogingoogle" />
+
     <ProgressBar
         android:id="@+id/pblogin"
         style="?android:attr/progressBarStyle"
@@ -84,6 +94,6 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnlogingoogle" />
+        app:layout_constraintTop_toBottomOf="@+id/btnloginfacebook" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

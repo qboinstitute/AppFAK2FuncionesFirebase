@@ -6,6 +6,11 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -14,11 +19,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
+
+    private val callbackManager = CallbackManager.Factory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +70,44 @@ class LoginActivity : AppCompatActivity() {
             )
             startActivityForResult(cliente.signInIntent, 777)
         }
+        //3. Autenticación Firebase con Facebook
+        btnloginfacebook.setOnClickListener {
+            pblogin.visibility = View.VISIBLE
+            LoginManager.getInstance().logInWithReadPermissions(
+                this,
+                listOf("email")
+            )
+            LoginManager.getInstance().registerCallback(callbackManager,
+            object: FacebookCallback<LoginResult>{
+                override fun onSuccess(result: LoginResult?) {
+                    result?.let {
+                        val token = it.accessToken
+                        val credencial: AuthCredential = FacebookAuthProvider
+                            .getCredential(token.token)
+                        FirebaseAuth.getInstance().signInWithCredential(credencial)
+                            .addOnCompleteListener { resultado->
+                                if(resultado.isSuccessful){
+                                    guardarPreferenciaIrAlHome(
+                                        resultado.result?.user?.email.toString(),
+                                        TipoAutenticacion.FACEBOOK.name,
+                                        resultado.result?.user?.displayName.toString(),
+                                        resultado.result?.user?.photoUrl.toString()
+                                    )
+                                }else{
+                                    enviarMensaje(obtenerVista(),
+                                    getString(R.string.valerrorloginfb2))
+                                }
+                            }
+                    }
+                }
+                override fun onCancel() {
+                    enviarMensaje(obtenerVista(), getString(R.string.valcancelloginfb))
+                }
+                override fun onError(error: FacebookException?) {
+                    enviarMensaje(obtenerVista(), getString(R.string.valerrorloginfb))
+                }
+            })
+        }
 
     }
 
@@ -69,6 +115,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode,resultCode, data)
         if(requestCode == 777){
             val task : Task<GoogleSignInAccount> = GoogleSignIn
                 .getSignedInAccountFromIntent(data)

@@ -60,6 +60,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     //Corrige el error de cantidad de métodos por archivo DEX
     implementation 'androidx.multidex:multidex:2.0.1'
+    //Implementar Autenticación con Facebook
+    implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
 
 
 }

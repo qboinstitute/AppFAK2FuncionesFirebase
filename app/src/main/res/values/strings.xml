@@ -20,6 +20,8 @@
     <string name="valcancelloginfb">Canceló la autenticación a Facebook.</string>
     <string name="valerrorloginfb">Error en la autenticación a Facebook.</string>
     <string name="valerrorloginfb2">Error en la autenticación a Facebook.</string>
+    <string name="valbtnlogingithub">Autenticación GitHub</string>
+    <string name="valactionsalir">SALIR</string>
 
 
 </resources>

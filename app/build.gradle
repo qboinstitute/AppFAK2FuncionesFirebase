@@ -62,6 +62,8 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     //Implementar Autenticación con Facebook
     implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
+    //Implementar Autenticación con Github
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 
 
 }

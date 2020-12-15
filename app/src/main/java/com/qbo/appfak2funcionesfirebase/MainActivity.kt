@@ -1,9 +1,11 @@
 package com.qbo.appfak2funcionesfirebase
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -17,12 +19,15 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.facebook.login.LoginManager
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navView: NavigationView
+    var tipo :String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         val preferencia : SharedPreferences =
             getSharedPreferences("appFirebaseQBO", Context.MODE_PRIVATE)
         val email = preferencia.getString("email","").toString()
-        val tipo = preferencia.getString("tipo","").toString()
+        tipo = preferencia.getString("tipo","").toString()
         val nombre = preferencia.getString("nombre","").toString()
         val urlimagen = preferencia.getString("urlimagen","").toString()
         val tvnombreusuario : TextView = navView.getHeaderView(0)
@@ -66,6 +71,25 @@ class MainActivity : AppCompatActivity() {
             Picasso.get().load(urlimagen).into(ivusuario)
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemsalir = item.itemId
+        if(itemsalir == R.id.action_salir)
+        {
+            val preferencias : SharedPreferences.Editor =
+                getSharedPreferences("appFirebaseQBO",
+                    Context.MODE_PRIVATE).edit()
+            preferencias.clear()
+            preferencias.apply()
+            if(tipo == TipoAutenticacion.FACEBOOK.name){
+                LoginManager.getInstance().logOut()
+            }
+            FirebaseAuth.getInstance().signOut()
+            startActivity(Intent(this, LoginActivity::class.java))
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

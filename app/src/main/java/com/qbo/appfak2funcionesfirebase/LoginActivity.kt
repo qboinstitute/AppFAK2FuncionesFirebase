@@ -3,6 +3,7 @@ package com.qbo.appfak2funcionesfirebase
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -18,15 +19,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_login.*
+import okhttp3.*
+import java.io.IOException
+import java.math.BigInteger
+import java.security.SecureRandom
 
 class LoginActivity : AppCompatActivity() {
 
     private val callbackManager = CallbackManager.Factory.create()
+    private val aleatorio: SecureRandom = SecureRandom()
+    private val URL_CALLBACK = "qbogit://git.oauth2token"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,9 +113,81 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
         }
+        //4. Autenticación a Firebase con GitHub
+        btnlogingithub.setOnClickListener {
+            pblogin.visibility = View.GONE
+            val httpUrl = HttpUrl.Builder()
+                .scheme("https")
+                .host("github.com")
+                .addPathSegment("login")
+                .addPathSegment("oauth")
+                .addPathSegment("authorize")
+                .addQueryParameter("client_id", "48f22557f074b249bdac")
+                .addQueryParameter("redirect_uri", URL_CALLBACK)
+                .addQueryParameter("state", getRandomString())
+                .addQueryParameter("scope", "user:email")
+                .build()
+            val intent = Intent(Intent.ACTION_VIEW,
+                Uri.parse(httpUrl.toString()))
+            startActivity(intent)
+        }
+        val uri = intent.data
+        if(uri != null && uri.toString().startsWith(URL_CALLBACK)){
+            val codigo = uri.getQueryParameter("code")
+            val estado = uri.getQueryParameter("state")
+            if (codigo != null && estado != null){
+                obtenerCredencial(codigo, estado)
+            }
+        }
 
     }
 
+    private fun obtenerCredencial(codigo: String, estado: String) {
+        val okhttpclient = OkHttpClient()
+        val mensaje = FormBody.Builder()
+            .add("client_id", "48f22557f074b249bdac")
+            .add("client_secret", "990dc71cd1b981ee3dfa35dc191e8b028dd3a346")
+            .add("code", codigo)
+            .add("redirect_uri", URL_CALLBACK)
+            .add("state", estado)
+            .build()
+        val peticion = Request.Builder()
+            .url("https://github.com/login/oauth/access_token")
+            .post(mensaje)
+            .build()
+        okhttpclient.newCall(peticion)
+            .enqueue(object: Callback{
+                override fun onFailure(call: Call, e: IOException) {
+                    enviarMensaje(obtenerVista(), "Error en la autenticación")
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val responseBody: String = response.body!!.string()
+                    val token = responseBody.split("=|&".toRegex()).toTypedArray()
+                    if(token[0].equals("access_token", ignoreCase = true)){
+                        obtenerInformacionGitHubToken(token[1])
+                    }else{
+                        enviarMensaje(obtenerVista(), "Canceló la autenticación GitHub")
+                    }
+                }
+            })
+
+    }
+
+    private fun obtenerInformacionGitHubToken(token: String) {
+        val credencial = GithubAuthProvider.getCredential(token)
+        FirebaseAuth.getInstance().signInWithCredential(credencial)
+            .addOnCompleteListener {
+                if(it.isSuccessful){
+                    guardarPreferenciaIrAlHome(
+                        it.result?.additionalUserInfo?.username.toString(),
+                        TipoAutenticacion.GITHUB.name,
+                        it.result?.user?.displayName.toString(),
+                        it.result?.user?.photoUrl.toString()
+                    )
+                }
+            }
+    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -146,6 +223,10 @@ class LoginActivity : AppCompatActivity() {
                 pblogin.visibility = View.GONE
             }
         }
+    }
+
+    private fun getRandomString(): String{
+        return BigInteger(130, aleatorio).toString(32)
     }
 
     private fun guardarPreferenciaIrAlHome(

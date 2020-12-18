@@ -22,6 +22,12 @@
     <string name="valerrorloginfb2">Error en la autenticación a Facebook.</string>
     <string name="valbtnlogingithub">Autenticación GitHub</string>
     <string name="valactionsalir">SALIR</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="valbtntomarfoto">TOMAR FOTO</string>
+    <string name="valbtnsubirfoto">SUBIR FOTO A CLOUD STORAGE</string>
+    <string name="valnavfoto">Foto Storage</string>
+    <string name="valnavgaleria">Galeria Storage</string>
 
 
 </resources>

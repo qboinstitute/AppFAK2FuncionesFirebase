@@ -45,6 +45,7 @@ class RegistroFragment : Fragment() {
         return vista
     }
 
+
     private fun registrarPersona(vista: View) {
         val persona = hashMapOf(
             "apellido" to etapellido.text.toString(),

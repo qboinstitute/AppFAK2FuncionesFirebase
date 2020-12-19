@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -20,6 +21,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.*
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.*
 import java.io.IOException
@@ -139,7 +142,19 @@ class LoginActivity : AppCompatActivity() {
                 obtenerCredencial(codigo, estado)
             }
         }
+        obtenerTokenDispositivo()
 
+    }
+
+    private fun obtenerTokenDispositivo() {
+        FirebaseInstanceId.getInstance()
+            .instanceId.addOnCompleteListener {
+                it.result?.token?.let { token->
+                    Log.i("TOKENFIREBASE",
+                        "El toke del dispositivo es $token")
+                }
+            }
+        FirebaseMessaging.getInstance().subscribeToTopic("qboinstitute")
     }
 
     private fun obtenerCredencial(codigo: String, estado: String) {

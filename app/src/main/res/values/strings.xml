@@ -28,6 +28,13 @@
     <string name="valbtnsubirfoto">SUBIR FOTO A CLOUD STORAGE</string>
     <string name="valnavfoto">Foto Storage</string>
     <string name="valnavgaleria">Galeria Storage</string>
+    <string name="valnavregistropersona">Registrar Persona</string>
+    <string name="valnavlistapersona">Lista Personas</string>
+    <string name="valtituloregistro">REGISTRO A CLOUD FIRESTORE</string>
+    <string name="valetnombre">Ingrese su nombre</string>
+    <string name="valetapellido">Ingrese su apellido</string>
+    <string name="valetedad">Ingrese su edad</string>
+    <string name="valbtnregistrarfirestore">REGISTRAR CLOUD FIRESTORE</string>
 
 
 </resources>

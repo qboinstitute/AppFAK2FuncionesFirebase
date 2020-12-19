@@ -72,5 +72,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     //7.Firestore
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    //8.Notificaciones
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 
 }

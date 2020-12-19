@@ -12,6 +12,13 @@
             android:id="@+id/nav_galeria"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/valnavgaleria" />
-
+        <item
+            android:id="@+id/nav_registro_persona"
+            android:icon="@drawable/ic_account"
+            android:title="@string/valnavregistropersona" />
+        <item
+            android:id="@+id/nav_lista_persona"
+            android:icon="@drawable/ic_playlist"
+            android:title="@string/valnavlistapersona" />
     </group>
 </menu>

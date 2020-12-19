@@ -14,4 +14,14 @@
         android:name="com.qbo.appfak2funcionesfirebase.GaleriaFragment"
         android:label="@string/valnavgaleria"
         tools:layout="@layout/fragment_galeria" />
+    <fragment
+        android:id="@+id/nav_registro_persona"
+        android:name="com.qbo.appfak2funcionesfirebase.RegistroFragment"
+        android:label="@string/valnavregistropersona"
+        tools:layout="@layout/fragment_registro" />
+    <fragment
+        android:id="@+id/nav_lista_persona"
+        android:name="com.qbo.appfak2funcionesfirebase.ListaPersonaFragment"
+        android:label="@string/valnavlistapersona"
+        tools:layout="@layout/fragment_lista_persona" />
 </navigation>

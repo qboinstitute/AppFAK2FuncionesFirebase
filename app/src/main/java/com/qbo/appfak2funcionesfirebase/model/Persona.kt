@@ -1,4 +1,7 @@
 package com.qbo.appfak2funcionesfirebase.model
 
-class Persona {
-}
+data class Persona (
+        var nombre: String,
+        var apellido: String,
+        var edad: Int
+        )
